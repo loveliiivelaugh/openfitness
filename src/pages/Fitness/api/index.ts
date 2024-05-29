@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 
-const hostname = import.meta.env.VITE_HOSTNAME;
+const hostname = (process.env.VITE_HOSTNAME || import.meta.env.VITE_HOSTNAME);
 // const hostname = "http://localhost:5001";
 
 
