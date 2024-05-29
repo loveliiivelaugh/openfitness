@@ -1,8 +1,8 @@
 import axios from 'axios'
 
 
-// const hostname = import.meta.env.VITE_HOSTNAME;
-const hostname = "http://localhost:5001";
+const hostname = import.meta.env.VITE_HOSTNAME;
+// const hostname = "http://localhost:5001";
 
 
 const client = axios.create({
