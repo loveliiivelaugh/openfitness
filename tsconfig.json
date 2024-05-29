@@ -26,7 +26,10 @@
     "noFallthroughCasesInSwitch": true,
 
     /* Docker Config */
-    "esModuleInterop": true
+    "esModuleInterop": true,
+
+    // Allow JS
+    "allowJs": true
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
