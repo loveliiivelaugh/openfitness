@@ -1,0 +1,604 @@
+{
+    "common": [
+        {
+            "food_name": "steak",
+            "serving_unit": "steak",
+            "tag_name": "steak",
+            "serving_qty": 1,
+            "common_type": null,
+            "tag_id": "827",
+            "photo": {
+                "thumb": "https://nix-tag-images.s3.amazonaws.com/827_thumb.jpg"
+            },
+            "locale": "en_US"
+        },
+        {
+            "food_name": "ham steak",
+            "serving_unit": "oz",
+            "tag_name": "ham steak",
+            "serving_qty": 1,
+            "common_type": null,
+            "tag_id": "2555",
+            "photo": {
+                "thumb": "https://nix-tag-images.s3.amazonaws.com/2555_thumb.jpg"
+            },
+            "locale": "en_US"
+        },
+        {
+            "food_name": "steak tip",
+            "serving_unit": "oz, cooked",
+            "tag_name": "steak tips",
+            "serving_qty": 3,
+            "common_type": null,
+            "tag_id": "3195",
+            "photo": {
+                "thumb": "https://d2eawub7utcl6.cloudfront.net/images/nix-apple-grey.png",
+                "highres": null,
+                "is_user_uploaded": false
+            },
+            "locale": "en_US"
+        },
+        {
+            "food_name": "beef steak",
+            "serving_unit": "steak",
+            "tag_name": "steak",
+            "serving_qty": 1,
+            "common_type": null,
+            "tag_id": "827",
+            "photo": {
+                "thumb": "https://nix-tag-images.s3.amazonaws.com/827_thumb.jpg"
+            },
+            "locale": "en_US"
+        },
+        {
+            "food_name": "tuna steak",
+            "serving_unit": "tuna steak",
+            "tag_name": "tuna steak",
+            "serving_qty": 1,
+            "common_type": null,
+            "tag_id": "9184",
+            "photo": {
+                "thumb": "https://nix-tag-images.s3.amazonaws.com/9184_thumb.jpg"
+            },
+            "locale": "en_US"
+        },
+        {
+            "food_name": "pork steak",
+            "serving_unit": "steak (6 oz cooked)",
+            "tag_name": "pork steak",
+            "serving_qty": 1,
+            "common_type": null,
+            "tag_id": "6226",
+            "photo": {
+                "thumb": "https://nix-tag-images.s3.amazonaws.com/6226_thumb.jpg"
+            },
+            "locale": "en_US"
+        },
+        {
+            "food_name": "steak sauce",
+            "serving_unit": "Tbsp",
+            "tag_name": "steak sauce",
+            "serving_qty": 2,
+            "common_type": null,
+            "tag_id": "180",
+            "photo": {
+                "thumb": "https://d2eawub7utcl6.cloudfront.net/images/nix-apple-grey.png",
+                "highres": null,
+                "is_user_uploaded": false
+            },
+            "locale": "en_US"
+        },
+        {
+            "food_name": "strip steak",
+            "serving_unit": "oz",
+            "tag_name": "strip steak",
+            "serving_qty": 3,
+            "common_type": null,
+            "tag_id": "2287",
+            "photo": {
+                "thumb": "https://nix-tag-images.s3.amazonaws.com/2287_thumb.jpg"
+            },
+            "locale": "en_US"
+        },
+        {
+            "food_name": "steak salad",
+            "serving_unit": "salad",
+            "tag_name": "steak salad",
+            "serving_qty": 1,
+            "common_type": null,
+            "tag_id": "4282",
+            "photo": {
+                "thumb": "https://nix-tag-images.s3.amazonaws.com/4282_thumb.jpg"
+            },
+            "locale": "en_US"
+        },
+        {
+            "food_name": "flank steak",
+            "serving_unit": "oz",
+            "tag_name": "flank steak",
+            "serving_qty": 3,
+            "common_type": null,
+            "tag_id": "1986",
+            "photo": {
+                "thumb": "https://nix-tag-images.s3.amazonaws.com/1986_thumb.jpg"
+            },
+            "locale": "en_US"
+        },
+        {
+            "food_name": "skirt steak",
+            "serving_unit": "oz, cooked",
+            "tag_name": "skirt steak",
+            "serving_qty": 3,
+            "common_type": null,
+            "tag_id": "3513",
+            "photo": {
+                "thumb": "https://nix-tag-images.s3.amazonaws.com/3513_thumb.jpg"
+            },
+            "locale": "en_US"
+        },
+        {
+            "food_name": "filet steak",
+            "serving_unit": "oz",
+            "tag_name": "filet mignon",
+            "serving_qty": 3,
+            "common_type": null,
+            "tag_id": "557",
+            "photo": {
+                "thumb": "https://nix-tag-images.s3.amazonaws.com/557_thumb.jpg"
+            },
+            "locale": "en_US"
+        },
+        {
+            "food_name": "steak tacos",
+            "serving_unit": "taco",
+            "tag_name": "steak taco",
+            "serving_qty": 1,
+            "common_type": null,
+            "tag_id": "2322",
+            "photo": {
+                "thumb": "https://nix-tag-images.s3.amazonaws.com/2322_thumb.jpg"
+            },
+            "locale": "en_US"
+        },
+        {
+            "food_name": "steakburger",
+            "serving_unit": "sandwich",
+            "tag_name": "steak burger",
+            "serving_qty": 1,
+            "common_type": null,
+            "tag_id": "8258",
+            "photo": {
+                "thumb": "https://nix-tag-images.s3.amazonaws.com/608_thumb.jpg"
+            },
+            "locale": "en_US"
+        },
+        {
+            "food_name": "salmon steak",
+            "serving_unit": "steak",
+            "tag_name": "salmon steak",
+            "serving_qty": 1,
+            "common_type": null,
+            "tag_id": "4638",
+            "photo": {
+                "thumb": "https://d2eawub7utcl6.cloudfront.net/images/nix-apple-grey.png",
+                "highres": null,
+                "is_user_uploaded": false
+            },
+            "locale": "en_US"
+        },
+        {
+            "food_name": "grilled steak",
+            "serving_unit": "steak",
+            "tag_name": "steak",
+            "serving_qty": 1,
+            "common_type": null,
+            "tag_id": "827",
+            "photo": {
+                "thumb": "https://nix-tag-images.s3.amazonaws.com/827_thumb.jpg"
+            },
+            "locale": "en_US"
+        },
+        {
+            "food_name": "sirloin steak",
+            "serving_unit": "oz",
+            "tag_name": "sirloin steak",
+            "serving_qty": 3,
+            "common_type": null,
+            "tag_id": "9033",
+            "photo": {
+                "thumb": "https://nix-tag-images.s3.amazonaws.com/9033_thumb.jpg"
+            },
+            "locale": "en_US"
+        },
+        {
+            "food_name": "steak sirloin",
+            "serving_unit": "oz",
+            "tag_name": "sirloin steak",
+            "serving_qty": 3,
+            "common_type": null,
+            "tag_id": "9033",
+            "photo": {
+                "thumb": "https://nix-tag-images.s3.amazonaws.com/9033_thumb.jpg"
+            },
+            "locale": "en_US"
+        },
+        {
+            "food_name": "ribeye steaks",
+            "serving_unit": "oz",
+            "tag_name": "ribeye",
+            "serving_qty": 3,
+            "common_type": null,
+            "tag_id": "2059",
+            "photo": {
+                "thumb": "https://nix-tag-images.s3.amazonaws.com/2059_thumb.jpg"
+            },
+            "locale": "en_US"
+        },
+        {
+            "food_name": "steak taco salad",
+            "serving_unit": "salad in tortilla bowl",
+            "tag_name": "steak taco salad",
+            "serving_qty": 1,
+            "common_type": null,
+            "tag_id": "6965",
+            "photo": {
+                "thumb": "https://d2eawub7utcl6.cloudfront.net/images/nix-apple-grey.png",
+                "highres": null,
+                "is_user_uploaded": false
+            },
+            "locale": "en_US"
+        }
+    ],
+    "branded": [
+        {
+            "food_name": "Steakhouse Bowl with Steak",
+            "serving_unit": "Serving",
+            "nix_brand_id": "513fbc1283aa2dc80c000158",
+            "brand_name_item_name": "Black Angus Steakhouse Steakhouse Bowl with Steak",
+            "serving_qty": 1,
+            "nf_calories": 770,
+            "photo": {
+                "thumb": "https://d2eawub7utcl6.cloudfront.net/images/nix-apple-grey.png",
+                "highres": null,
+                "is_user_uploaded": false
+            },
+            "brand_name": "Black Angus Steakhouse",
+            "region": 1,
+            "brand_type": 1,
+            "nix_item_id": "d3ea7274d7507a7b52157ac1",
+            "locale": "en_US"
+        },
+        {
+            "food_name": "Beef Steak, Original",
+            "serving_unit": "package",
+            "nix_brand_id": "51db37c9176fe9790a8996d9",
+            "brand_name_item_name": "Jack Link's Beef Steak, Original",
+            "serving_qty": 1,
+            "nf_calories": 130,
+            "photo": {
+                "thumb": "https://assets.syndigo.com/738135ba-5d80-428e-aedf-8cf29a8fb9c4"
+            },
+            "brand_name": "Jack Link's",
+            "region": 1,
+            "brand_type": 2,
+            "nix_item_id": "51c3630797c3e69de4b03463",
+            "locale": "en_US"
+        },
+        {
+            "food_name": "Steak Sandwiches, Pizza Steak, Half",
+            "serving_unit": "Serving",
+            "nix_brand_id": "62fe5c6f85def55408bdc88c",
+            "brand_name_item_name": "The Cheese Steak Shop Steak Sandwiches, Pizza Steak, Half",
+            "serving_qty": 1,
+            "nf_calories": 620,
+            "photo": {
+                "thumb": "https://d2eawub7utcl6.cloudfront.net/images/nix-apple-grey.png",
+                "highres": null,
+                "is_user_uploaded": false
+            },
+            "brand_name": "The Cheese Steak Shop",
+            "region": 1,
+            "brand_type": 1,
+            "nix_item_id": "bd9d761320723ab89e64ad92",
+            "locale": "en_US"
+        },
+        {
+            "food_name": "Beef Sandwich Steak",
+            "serving_unit": "piece",
+            "nix_brand_id": "51db37b3176fe9790a89868d",
+            "brand_name_item_name": "Steak-umm Beef Sandwich Steak",
+            "serving_qty": 1,
+            "nf_calories": 130,
+            "photo": {
+                "thumb": "https://nutritionix-api.s3.amazonaws.com/65ed93a60249960008540efe.jpeg"
+            },
+            "brand_name": "Steak-umm",
+            "region": 1,
+            "brand_type": 2,
+            "nix_item_id": "51d2f7c6cc9bff111580c4ad",
+            "locale": "en_US"
+        },
+        {
+            "food_name": "Sliced Steaks, 100% All Beef Sandwich Steaks",
+            "serving_unit": "cooked portion",
+            "nix_brand_id": "51db37b3176fe9790a89868d",
+            "brand_name_item_name": "Steak-umm Sliced Steaks, 100% All Beef Sandwich Steaks",
+            "serving_qty": 1,
+            "nf_calories": 100,
+            "photo": {
+                "thumb": "https://nutritionix-api.s3.amazonaws.com/6401d3c8a48fd50008b18e65.jpeg"
+            },
+            "brand_name": "Steak-umm",
+            "region": 1,
+            "brand_type": 2,
+            "nix_item_id": "6401d3c8a48fd50008b18e64",
+            "locale": "en_US"
+        },
+        {
+            "food_name": "Steak Sandwiches, Pizza Steak, King",
+            "serving_unit": "Serving",
+            "nix_brand_id": "62fe5c6f85def55408bdc88c",
+            "brand_name_item_name": "The Cheese Steak Shop Steak Sandwiches, Pizza Steak, King",
+            "serving_qty": 1,
+            "nf_calories": 1530,
+            "photo": {
+                "thumb": "https://d2eawub7utcl6.cloudfront.net/images/nix-apple-grey.png",
+                "highres": null,
+                "is_user_uploaded": false
+            },
+            "brand_name": "The Cheese Steak Shop",
+            "region": 1,
+            "brand_type": 1,
+            "nix_item_id": "bd9d761369e95439efae2f07",
+            "locale": "en_US"
+        },
+        {
+            "food_name": "Steak",
+            "serving_unit": "serving",
+            "nix_brand_id": "513fbc1283aa2dc80c00028d",
+            "brand_name_item_name": "Great Steak Steak",
+            "serving_qty": 1,
+            "nf_calories": 140,
+            "photo": {
+                "thumb": "https://d2eawub7utcl6.cloudfront.net/images/nix-apple-grey.png",
+                "highres": null,
+                "is_user_uploaded": false
+            },
+            "brand_name": "Great Steak",
+            "region": 1,
+            "brand_type": 1,
+            "nix_item_id": "513fc9c4673c4fbc2600062f",
+            "locale": "en_US"
+        },
+        {
+            "food_name": "Steak Sandwiches, Pizza Steak, Large",
+            "serving_unit": "Serving",
+            "nix_brand_id": "62fe5c6f85def55408bdc88c",
+            "brand_name_item_name": "The Cheese Steak Shop Steak Sandwiches, Pizza Steak, Large",
+            "serving_qty": 1,
+            "nf_calories": 1170,
+            "photo": {
+                "thumb": "https://d2eawub7utcl6.cloudfront.net/images/nix-apple-grey.png",
+                "highres": null,
+                "is_user_uploaded": false
+            },
+            "brand_name": "The Cheese Steak Shop",
+            "region": 1,
+            "brand_type": 1,
+            "nix_item_id": "bd9d7613b6a0b436b5f57cde",
+            "locale": "en_US"
+        },
+        {
+            "food_name": "Steak Portabella",
+            "serving_unit": "package",
+            "nix_brand_id": "51db37cb176fe9790a899888",
+            "brand_name_item_name": "Lean Cuisine Steak Portabella",
+            "serving_qty": 1,
+            "nf_calories": 190,
+            "photo": {
+                "thumb": "https://assets.syndigo.com/07724560-5bd1-421d-b40d-15070e073a4b"
+            },
+            "brand_name": "Lean Cuisine",
+            "region": 1,
+            "brand_type": 2,
+            "nix_item_id": "51d2f7cdcc9bff111580c4ce",
+            "locale": "en_US"
+        },
+        {
+            "food_name": "Steak Sandwiches, Classic Cheese Steak, Large",
+            "serving_unit": "Serving",
+            "nix_brand_id": "62fe5c6f85def55408bdc88c",
+            "brand_name_item_name": "The Cheese Steak Shop Steak Sandwiches, Classic Cheese Steak, Large",
+            "serving_qty": 1,
+            "nf_calories": 960,
+            "photo": {
+                "thumb": "https://d2eawub7utcl6.cloudfront.net/images/nix-apple-grey.png",
+                "highres": null,
+                "is_user_uploaded": false
+            },
+            "brand_name": "The Cheese Steak Shop",
+            "region": 1,
+            "brand_type": 1,
+            "nix_item_id": "bd9d7613786322016b934d7d",
+            "locale": "en_US"
+        },
+        {
+            "food_name": "Steak Sandwiches, Classic Cheese Steak, King",
+            "serving_unit": "Serving",
+            "nix_brand_id": "62fe5c6f85def55408bdc88c",
+            "brand_name_item_name": "The Cheese Steak Shop Steak Sandwiches, Classic Cheese Steak, King",
+            "serving_qty": 1,
+            "nf_calories": 1300,
+            "photo": {
+                "thumb": "https://d2eawub7utcl6.cloudfront.net/images/nix-apple-grey.png",
+                "highres": null,
+                "is_user_uploaded": false
+            },
+            "brand_name": "The Cheese Steak Shop",
+            "region": 1,
+            "brand_type": 1,
+            "nix_item_id": "bd9d7613b0b71df230d9adc8",
+            "locale": "en_US"
+        },
+        {
+            "food_name": "Steak Sandwiches, Classic Cheese Steak, Half",
+            "serving_unit": "Serving",
+            "nix_brand_id": "62fe5c6f85def55408bdc88c",
+            "brand_name_item_name": "The Cheese Steak Shop Steak Sandwiches, Classic Cheese Steak, Half",
+            "serving_qty": 1,
+            "nf_calories": 510,
+            "photo": {
+                "thumb": "https://d2eawub7utcl6.cloudfront.net/images/nix-apple-grey.png",
+                "highres": null,
+                "is_user_uploaded": false
+            },
+            "brand_name": "The Cheese Steak Shop",
+            "region": 1,
+            "brand_type": 1,
+            "nix_item_id": "bd9d76135c4b28894f741f05",
+            "locale": "en_US"
+        },
+        {
+            "food_name": "Steak Strips, Extra Thick Cut",
+            "serving_unit": "oz",
+            "nix_brand_id": "51db380c176fe9790a89b0d7",
+            "brand_name_item_name": "Kirkland Signature Steak Strips, Extra Thick Cut",
+            "serving_qty": 1,
+            "nf_calories": 60,
+            "photo": {
+                "thumb": "https://nutritionix-api.s3.amazonaws.com/643d27e6515da30008450645.jpeg"
+            },
+            "brand_name": "Kirkland Signature",
+            "region": 1,
+            "brand_type": 2,
+            "nix_item_id": "53ab35980c0959de3a7b64c4",
+            "locale": "en_US"
+        },
+        {
+            "food_name": "Chopped Steak",
+            "serving_unit": "plating",
+            "nix_brand_id": "513fbc1283aa2dc80c00056e",
+            "brand_name_item_name": "Ponderosa Steakhouse Chopped Steak",
+            "serving_qty": 1,
+            "nf_calories": 690,
+            "photo": {
+                "thumb": "https://d2eawub7utcl6.cloudfront.net/images/nix-apple-grey.png",
+                "highres": null,
+                "is_user_uploaded": false
+            },
+            "brand_name": "Ponderosa Steakhouse",
+            "region": 1,
+            "brand_type": 1,
+            "nix_item_id": "513fc9e73fe3ffd403000be8",
+            "locale": "en_US"
+        },
+        {
+            "food_name": "Steakhouse Chili",
+            "serving_unit": "Ounce",
+            "nix_brand_id": "513fbc1283aa2dc80c00056e",
+            "brand_name_item_name": "Ponderosa Steakhouse Steakhouse Chili",
+            "serving_qty": 1,
+            "nf_calories": 25,
+            "photo": {
+                "thumb": "https://d2eawub7utcl6.cloudfront.net/images/nix-apple-grey.png",
+                "highres": null,
+                "is_user_uploaded": false
+            },
+            "brand_name": "Ponderosa Steakhouse",
+            "region": 1,
+            "brand_type": 1,
+            "nix_item_id": "513fc9e73fe3ffd403000b60",
+            "locale": "en_US"
+        },
+        {
+            "food_name": "Salisbury Steak",
+            "serving_unit": "Ounce",
+            "nix_brand_id": "513fbc1283aa2dc80c00056e",
+            "brand_name_item_name": "Ponderosa Steakhouse Salisbury Steak",
+            "serving_qty": 1,
+            "nf_calories": 45,
+            "photo": {
+                "thumb": "https://d2eawub7utcl6.cloudfront.net/images/nix-apple-grey.png",
+                "highres": null,
+                "is_user_uploaded": false
+            },
+            "brand_name": "Ponderosa Steakhouse",
+            "region": 1,
+            "brand_type": 1,
+            "nix_item_id": "513fc9e73fe3ffd403000b47",
+            "locale": "en_US"
+        },
+        {
+            "food_name": "Chop Steak",
+            "serving_unit": "Serving",
+            "nix_brand_id": "513fbc1283aa2dc80c00014a",
+            "brand_name_item_name": "LongHorn Steakhouse Chop Steak",
+            "serving_qty": 1,
+            "nf_calories": 570,
+            "photo": {
+                "thumb": "https://d2eawub7utcl6.cloudfront.net/images/nix-apple-grey.png",
+                "highres": null,
+                "is_user_uploaded": false
+            },
+            "brand_name": "LongHorn Steakhouse",
+            "region": 1,
+            "brand_type": 1,
+            "nix_item_id": "23cb313492ec84ca508106ad",
+            "locale": "en_US"
+        },
+        {
+            "food_name": "Mushroom and Onion Steak Topping to Any Steak",
+            "serving_unit": "portion",
+            "nix_brand_id": "513fbc1283aa2dc80c000b8b",
+            "brand_name_item_name": "Colton's Steak House & Grill Mushroom and Onion Steak Topping to Any Steak",
+            "serving_qty": 1,
+            "nf_calories": 150,
+            "photo": {
+                "thumb": "https://d2eawub7utcl6.cloudfront.net/images/nix-apple-grey.png",
+                "highres": null,
+                "is_user_uploaded": false
+            },
+            "brand_name": "Colton's Steak House & Grill",
+            "region": 1,
+            "brand_type": 1,
+            "nix_item_id": "152195058434b8ca2560085c",
+            "locale": "en_US"
+        },
+        {
+            "food_name": "Country Fried Steak",
+            "serving_unit": "plating",
+            "nix_brand_id": "513fbc1283aa2dc80c00056e",
+            "brand_name_item_name": "Ponderosa Steakhouse Country Fried Steak",
+            "serving_qty": 1,
+            "nf_calories": 560,
+            "photo": {
+                "thumb": "https://d2eawub7utcl6.cloudfront.net/images/nix-apple-grey.png",
+                "highres": null,
+                "is_user_uploaded": false
+            },
+            "brand_name": "Ponderosa Steakhouse",
+            "region": 1,
+            "brand_type": 1,
+            "nix_item_id": "513fc9e73fe3ffd403000bd9",
+            "locale": "en_US"
+        },
+        {
+            "food_name": "Kid's Sirloin Steak",
+            "serving_unit": "Serving",
+            "nix_brand_id": "513fbc1283aa2dc80c00014a",
+            "brand_name_item_name": "LongHorn Steakhouse Kid's Sirloin Steak",
+            "serving_qty": 1,
+            "nf_calories": 230,
+            "photo": {
+                "thumb": "https://d2eawub7utcl6.cloudfront.net/images/nix-apple-grey.png",
+                "highres": null,
+                "is_user_uploaded": false
+            },
+            "brand_name": "LongHorn Steakhouse",
+            "region": 1,
+            "brand_type": 1,
+            "nix_item_id": "23cb31346f4e1795e2a94bd3",
+            "locale": "en_US"
+        }
+    ]
+}
