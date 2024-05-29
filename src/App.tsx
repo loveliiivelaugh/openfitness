@@ -1,56 +1,56 @@
-import { useEffect, useState } from 'react'
+// import { useState } from 'react'
 import { useForm } from '@tanstack/react-form';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { create } from 'zustand';
 
-import { Grid, ListItemText, Stack, Typography } from '@mui/material';
+import { Grid, Stack, Typography } from '@mui/material';
 
 import { fitnessQueries } from './pages/Fitness/api';
 
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
+// import reactLogo from './assets/react.svg';
+// import viteLogo from '/vite.svg';
 import './App.css';
 
 
-const DefaultContent = () => {
-  const [count, setCount] = useState(0)
+// const DefaultContent = () => {
+//   const [count, setCount] = useState(0)
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>OpenFitness Coming Soon!</h1>
-      <h1>OpenFitness Coming Soon!</h1>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-        <p> Something new! </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-};
-const ChartsContainer = (props: any) => {
-  console.log(props);
-  return (
-    <>
-    </>
-  )
-}
+//   return (
+//     <>
+//       <div>
+//         <a href="https://vitejs.dev" target="_blank">
+//           <img src={viteLogo} className="logo" alt="Vite logo" />
+//         </a>
+//         <a href="https://react.dev" target="_blank">
+//           <img src={reactLogo} className="logo react" alt="React logo" />
+//         </a>
+//       </div>
+//       <h1>OpenFitness Coming Soon!</h1>
+//       <h1>OpenFitness Coming Soon!</h1>
+//       <h1>Vite + React</h1>
+//       <div className="card">
+//         <button onClick={() => setCount((count) => count + 1)}>
+//           count is {count}
+//         </button>
+//         <p>
+//           Edit <code>src/App.tsx</code> and save to test HMR
+//         </p>
+//         <p> Something new! </p>
+//       </div>
+//       <p className="read-the-docs">
+//         Click on the Vite and React logos to learn more
+//       </p>
+//     </>
+//   )
+// };
+// const ChartsContainer = (props: any) => {
+//   console.log(props);
+//   return (
+//     <>
+//     </>
+//   )
+// }
 
 const queryClient = new QueryClient();
 
@@ -79,9 +79,9 @@ const Fitness = () => {
   const readDatabaseQuery = useQuery(fitnessQueries.readDatabaseQuery());
   // Get All Fitness Tables -- Data for the charts / visualizations
   const fitnessTablesQuery = useQuery(fitnessQueries.fitnessTablesQuery());
-  // Exercises and Foods Search Queries -- Search for Exercises and Foods for logging
-  const exercisesQuery = useQuery(fitnessQueries.exercisesQuery());
-  const foodsQuery = useMutation(fitnessQueries.foodsQuery());
+  // // Exercises and Foods Search Queries -- Search for Exercises and Foods for logging
+  // const exercisesQuery = useQuery(fitnessQueries.exercisesQuery());
+  // const foodsQuery = useMutation(fitnessQueries.foodsQuery());
 
   const form = useForm({
     defaultValues: {
@@ -96,7 +96,9 @@ const Fitness = () => {
     fitnessTablesQuery,
     // exercisesQuery,
     // foodsQuery,
-    // form
+    form,
+    appStore,
+    fitnessStore
   );
 
   return (
