@@ -1,9 +1,9 @@
-import { Suspense, useState } from 'react'
+import { Suspense } from 'react'
 import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query';
 // import Keycloak from 'keycloak-js';
 
 // import { SmoothScroll } from './theme/SmoothScroll.jsx';
-import { KeycloakProvider } from './Keycloak/KeycloakProvider';
+// import { KeycloakProvider } from './Keycloak/KeycloakProvider';
 import { PageTransitionWrapper, ThemeProvider } from './theme/ThemeProvider';
 import { client, paths } from './pages/Fitness/api';
 import './index.css'
@@ -23,20 +23,20 @@ const InitConfigProvider = ({ children }: { children: any }) => {
         queryKey: ["content"],
         queryFn: async () => (await client.get(paths.content)).data,
         select: (data) => {
-            window.appContent = data ? data : {};
+            (window as any).appContent = data ? data : {};
             
             return data;
         }
     }));
 
-    console.log({contentQuery})
+    console.log({ contentQuery });
 
 
     // Set global access to server client
-    window.client = client;
+    (window as any).client = client;
 
     // Initialize Keycloak
-    const [keycloakInstance, setKeycloakInstance] = useState(null as any);
+    // const [keycloakInstance, setKeycloakInstance] = useState(null as any);
     // useEffect(() => {
     //     const instance = new Keycloak(JSON.parse(import.meta.env.VITE_KEYCLOAK_CONFIG));
     //     setKeycloakInstance(instance);
@@ -45,7 +45,7 @@ const InitConfigProvider = ({ children }: { children: any }) => {
     return ({
         pending: "Uninitialized...",
         loading: "Loading App Theme Configuration...",
-        success: children(themeConfigQuery.data, keycloakInstance),
+        success: children(themeConfigQuery.data),
         error: "Something went wrong..."
     }[themeConfigQuery.status]);
 };
@@ -56,7 +56,7 @@ export const Providers = ({ children }: { children: any }) => {
         <QueryClientProvider client={queryClient}>
             <Suspense fallback="Loading App Configuration...">
                 <InitConfigProvider>
-                    {(themeConfig: any, keycloakInstance: any | null) => (
+                    {(themeConfig: any) => (
                         <ThemeProvider themeConfig={themeConfig}>
                             <PageTransitionWrapper>
                                 {/* <SmoothScroll></SmoothScroll> */}
