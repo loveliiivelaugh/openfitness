@@ -6,8 +6,10 @@ import {
     Stack, TextField, Typography,
     Chip,
     Container,
-    Tabs, 
+    Tabs,
+    Avatar, 
 } from '@mui/material'
+import { AppBar, Toolbar } from '@mui/material'
 import { BottomNavigation, BottomNavigationAction } from "@mui/material";
 import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
 import SearchIcon from '@mui/icons-material/Search';
@@ -25,11 +27,9 @@ import foodsQueryMockJson from './api/nutritionix_mock.json';
 import exercisesMockJson from './api/exercisesMock.json';
 
 // Services
-import { DateTimeLabel, useAppStore } from '../../App';
 import { useFitnessStore } from './store';
 import { fitnessQueries } from './api';
-import Chat from '../Chat/Chat';
-import MyCalendar from './layout/Calendar';
+import HomeIcon from '@mui/icons-material/Home';
 
 
 const topics = [
@@ -44,7 +44,7 @@ const topics = [
 ];
 
 const Fitness = () => {
-    const appStore = useAppStore();
+    // const appStore = useAppStore();
     const fitnessStore = useFitnessStore();
     // Get Database Schema -- Builds fields for the forms
     const readDatabaseQuery = useQuery(fitnessQueries.readDatabaseQuery());
@@ -87,10 +87,22 @@ const Fitness = () => {
 
     
     return fitnessTablesQuery.isLoading ? <div>Loading...</div> : (
-        <Grid container my={8} p={2} spacing={2}>
+        <Grid container my={6} sx={{ maxWidth: "100vw" }}>
+
+            <AppBar>
+                <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
+                    <IconButton component="a" href="https://familyapps2.netlify.app/">
+                    {/* onClick={() => window.history.back() || window.history.go(-1)}> */}
+                        <HomeIcon />
+                    </IconButton>
+                    <Typography variant="h6">OpenFitness</Typography> 
+                    <Avatar src={"M"} sx={{ width: 40, height: 40 }} />
+                </Toolbar>
+            </AppBar>
+            
             <Grid item sm={12} sx={{ display: "flex", justifyContent: "space-between", alignItems: "center"}}>
                 <Typography variant="h4">Fitness Dashboard</Typography>
-                <DateTimeLabel />
+                {/* <DateTimeLabel /> */}
             </Grid>
 
             <Grid item sm={12}>
@@ -124,7 +136,7 @@ const Fitness = () => {
                 <ChartsContainer charts={fitnessTablesQuery.data.charts.weight} defaultChart='bar'/>
             </Grid>
             <Grid item sm={12} md={12} lg={12}>
-                <MyCalendar />
+                {/* <MyCalendar /> */}
             </Grid>
 
             <Drawer open={fitnessStore.isDrawerOpen} onClose={() => {
@@ -183,7 +195,7 @@ const Fitness = () => {
                             <Box component={form.Form} onSubmit={form.handleSubmit} sx={{ mb: 4 }}>
                                 <form.Field name="foodsInput">
                                     {(field) => (
-                                       
+
                                         <TextField
                                             type="text"
                                             value={field.state.value}
@@ -200,9 +212,9 @@ const Fitness = () => {
                                                 ),
                                                 endAdornment: (
                                                     <InputAdornment position="end">
-                                                        <IconButton id="qr-scan-button" onClick={() => appStore.setAppView("camera")} sx={{ color: "#fff" }}>
+                                                        {/* <IconButton id="qr-scan-button" onClick={() => appStore.setAppView("camera")} sx={{ color: "#fff" }}>
                                                             <QrCodeScannerIcon />
-                                                        </IconButton>
+                                                        </IconButton> */}
                                                     </InputAdornment>
                                                 ),
                                                 sx:{

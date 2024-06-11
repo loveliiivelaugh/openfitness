@@ -1,5 +1,3 @@
-import React from 'react';
-import axios from 'axios';
 import { 
     Avatar, ListItem, ListItemText, 
     ListItemIcon,ListItemButton
@@ -9,28 +7,21 @@ import { useFitnessStore } from '../store';
 import mockJson from '../api/nutritionixSingleItemMock.json';
 
 
-const hostname = import.meta.env.VITE_HOSTNAME;
-
-const ListContent = ({ data }) => {
+const ListContent = ({ data }: { data: any }) => {
     const fitnessStore = useFitnessStore();
 
-    const handleSelected = async (food) => {
-        console.log("handleSelected: ", food)
-
+    const handleSelected = async (food: any) => {
         const isFoodList = data?.branded;
-
-        // const result = (await axios.get(`${hostname}/api/foods/get-single-food?id=${food.nix_item_id}`)).data.foods[0];
-
-        // console.log("handleSelected.result: ", result);
         let result = isFoodList ? mockJson.foods[0] : food;
 
         fitnessStore.setSelectedSearchItem(result);
         fitnessStore.toggleDrawer({ open: false, anchor: "bottom" });
+
         setTimeout(() => fitnessStore.toggleDrawer({ open: true, anchor: "right" }), 250);
     };
 
     return data.branded 
-        ? data.branded.map((food, index) => (
+        ? data.branded.map((food: any, index: number) => (
             <ListItem 
                 key={index} 
                 sx={{ 
@@ -48,7 +39,7 @@ const ListContent = ({ data }) => {
                     <ListItemText primary={food.brand_name} secondary={`${food.nf_calories} Calories`} />
                 </ListItemButton>
             </ListItem>
-        )) : data.map((exercise, index) => (
+        )) : data.map((exercise: any, index: number) => (
             <ListItem
                 key={index}
                 sx={{

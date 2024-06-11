@@ -1,6 +1,6 @@
 import React from 'react';
-import { 
-    Box, Button, Grid, TextField, Typography, 
+import {
+    Box, Button, Grid, TextField, Typography,
 } from '@mui/material';
 import { useForm } from '@tanstack/react-form';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -31,7 +31,7 @@ const mapDefaultValue = (column, fitnessStore) => {
             return profile?.tdee || 0;
         case "bmr":
             return profile?.bmr || 0;
-            
+
         // Exercise Search Default Values
         case "reps":
             return 10;
@@ -87,24 +87,24 @@ const mapDefaultValue = (column, fitnessStore) => {
 
 const Attachment = () => (
     <Box sx={{}}>
-      <Typography id="demo-simple-select-label" variant="body1">
-        Progress Photo
-      </Typography>
-      <IconButton p={1}>
-        <AttachmentIcon />
-        <attachment />
-      </IconButton>
+        <Typography id="demo-simple-select-label" variant="body1">
+            Progress Photo
+        </Typography>
+        <IconButton p={1}>
+            <AttachmentIcon />
+            <attachment />
+        </IconButton>
     </Box>
 );
-  
+
 const SelectWrapper = (props) => (
     <Select {...props}>
-      {props.options && props.options
-        .map((option, index) => (
-          <MenuItem key={index} value={option.value}>
-            {option.label}
-          </MenuItem>
-      ))}
+        {props.options && props.options
+            .map((option, index) => (
+                <MenuItem key={index} value={option.value}>
+                    {option.label}
+                </MenuItem>
+            ))}
     </Select>
 );
 
@@ -122,7 +122,7 @@ const buildFields = (fieldsObject, formState) => fieldsObject
 
         // Define properties specific to the field type
         const FieldsProps = {
-            TextField: {...commonProperties },
+            TextField: { ...commonProperties },
             Select: {
                 ...commonProperties,
                 options: [],
@@ -175,10 +175,10 @@ const FormContainer = ({ schema, fitnessTablesQuery }) => {
 
     const form = useForm({
         defaultValues: Object.assign(
-            {}, 
+            {},
             ...schema.columns
-                .map((column) => ({ 
-                    [column]: mapDefaultValue(column, fitnessStore) 
+                .map((column) => ({
+                    [column]: mapDefaultValue(column, fitnessStore)
                 }))),
         onSubmit: async (values) => {
             console.log("values: ", values)
@@ -213,9 +213,9 @@ const FormContainer = ({ schema, fitnessTablesQuery }) => {
             await fitnessTablesQuery.refetch();
         },
     });
-   
+
     const handleCancelClick = () => {
-        form.reset(); 
+        form.reset();
         fitnessStore.toggleDrawer();
     };
 
@@ -226,7 +226,7 @@ const FormContainer = ({ schema, fitnessTablesQuery }) => {
 
     return (
         <Grid container component={form.Form} p={2} rowSpacing={2}>
-            
+
             <Grid item sm={12}>
                 <Typography variant="h5">
                     Log {schema.table}
@@ -236,11 +236,11 @@ const FormContainer = ({ schema, fitnessTablesQuery }) => {
             {buildFields(
                 schema.columns
                     .filter(column => !excludedColumns.includes(column))
-                    .map(column => ({ 
+                    .map(column => ({
                         name: column,
                         label: column,
-                        type: "text", 
-                        value: "" 
+                        type: "text",
+                        value: ""
                     })),
                 form
             ).map(Field => (
@@ -249,7 +249,7 @@ const FormContainer = ({ schema, fitnessTablesQuery }) => {
                         {(field) => (
                             <>
                                 {React.cloneElement(Field, {
-                                    ...field, 
+                                    ...field,
                                     defaultValue: field.state.value,
                                     onChange: (event) => field.handleChange(event.target.value),
                                     onBlur: field.handleBlur,
