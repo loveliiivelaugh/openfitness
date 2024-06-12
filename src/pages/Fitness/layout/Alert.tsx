@@ -1,24 +1,12 @@
-import { useState, } from 'react'
-import { Snackbar, Alert, Typography } from '@mui/material'
-
-interface AlertOrigin {
-    vertical: 'top' | 'bottom';
-    horizontal: 'left' | 'center' | 'right';
-}
+import { Alert, Typography } from '@mui/material'
 
 const Alerts = ({ message }: { message: string }) => {
-    const [open] = useState(true)
-
-    const origin = { vertical: 'bottom', horizontal: 'right' } as AlertOrigin;
-
     return (
-        <>
-            <Alert severity={'error'}>
-                <Typography variant="h6">
-                    {message}
-                </Typography>
-            </Alert>
-        </>
+        <Alert severity={'error'}>
+            <Typography variant="h6">
+                {message}
+            </Typography>
+        </Alert>
     )
 };
 
