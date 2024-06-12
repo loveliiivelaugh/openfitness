@@ -29,7 +29,7 @@ import exercisesMockJson from './api/exercisesMock.json';
 
 // Services
 import { useFitnessStore } from './store';
-import { fitnessQueries } from './api';
+import { fitnessQueries, paths } from './api';
 import HomeIcon from '@mui/icons-material/Home';
 
 
@@ -86,9 +86,6 @@ const Fitness = () => {
         }
     }, [fitnessTablesQuery.isSuccess, fitnessTablesQuery.data]);
 
-    // let tablesAreReady = ['profile', 'exercises', 'foods']
-    //     .every(table => fitnessTablesQuery.data?.[table]);
-
     return ({
         "pending": <div>Loading...</div>,
         "loading": <div>Tables are getting ready...</div>,
@@ -97,8 +94,7 @@ const Fitness = () => {
 
                 <AppBar>
                     <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-                        <IconButton component="a" href="https://familyapps2.netlify.app/">
-                        {/* onClick={() => window.history.back() || window.history.go(-1)}> */}
+                        <IconButton component="a" href={paths.appDepot}>
                             <HomeIcon />
                         </IconButton>
                         <Typography variant="h6">OpenFitness</Typography> 
