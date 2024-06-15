@@ -6,11 +6,13 @@ const hostname = import.meta.env.VITE_HOSTNAME;
 const paths = {
     "theme": "/api/theme/themeConfig",
     "content": "/api/cms/content",
-    "appDepot": import.meta.env.VITE_HOME_APP
+    "appDepot": (import.meta.env.MODE === "development")
+        ? "http://localhost:3000"
+        : import.meta.env.VITE_HOME_APP
 };
 
 const client = axios.create({
-    baseURL: import.meta.env.MODE === "development"
+    baseURL: (import.meta.env.MODE === "development")
         ? "http://localhost:5001"
         : hostname,
     timeout: 5000,

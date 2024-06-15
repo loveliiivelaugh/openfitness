@@ -4,15 +4,18 @@ import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-quer
 
 // import { SmoothScroll } from './theme/SmoothScroll.jsx';
 // import { KeycloakProvider } from './Keycloak/KeycloakProvider';
+import { SupabaseAuthProvider } from './Auth/Auth';
 import { PageTransitionWrapper, ThemeProvider } from './theme/ThemeProvider';
 import { client, paths } from './pages/Fitness/api';
 import './index.css'
+
+import { ReactNode } from 'react';
 
 
 const queryClient = new QueryClient();
 
 // On Apps First Load
-const InitConfigProvider = ({ children }: { children: any }) => {
+const InitConfigProvider = ({ children, session }: { children: any, session: any }) => {
     // Get Theme Config
     const themeConfigQuery = useQuery(({
         queryKey: ["themeConfig"],
@@ -31,6 +34,7 @@ const InitConfigProvider = ({ children }: { children: any }) => {
 
     console.log({ contentQuery });
 
+    (client as any).defaults.headers.common["auth-token"] = `userAuthToken=${session?.access_token}&appId=${import.meta.env.VITE_APP_ID}`;
 
     // Set global access to server client
     (window as any).client = client;
@@ -51,23 +55,27 @@ const InitConfigProvider = ({ children }: { children: any }) => {
 };
 
 
-export const Providers = ({ children }: { children: any }) => {
+export const Providers = ({ children }: { children: ReactNode }) => {
     return (
-        <QueryClientProvider client={queryClient}>
-            <Suspense fallback="Loading App Configuration...">
-                <InitConfigProvider>
-                    {(themeConfig: any) => (
-                        <ThemeProvider themeConfig={themeConfig}>
-                            <PageTransitionWrapper>
-                                {/* <SmoothScroll></SmoothScroll> */}
-                                    {children}
-                                {/* <KeycloakProvider keycloakInstance={keycloakInstance}>
-                                </KeycloakProvider> */}
-                            </PageTransitionWrapper>
-                        </ThemeProvider>
-                    )}
-                </InitConfigProvider>
-            </Suspense>
-        </QueryClientProvider>
+        <SupabaseAuthProvider>
+            {(session: any) => (
+                <QueryClientProvider client={queryClient}>
+                    <Suspense fallback="Loading App Configuration...">
+                        <InitConfigProvider session={session}>
+                            {(themeConfig: any) => (
+                                <ThemeProvider themeConfig={themeConfig}>
+                                    <PageTransitionWrapper>
+                                        {/* <SmoothScroll></SmoothScroll> */}
+                                            {children}
+                                        {/* <KeycloakProvider keycloakInstance={keycloakInstance}>
+                                        </KeycloakProvider> */}
+                                    </PageTransitionWrapper>
+                                </ThemeProvider>
+                            )}
+                        </InitConfigProvider>
+                    </Suspense>
+                </QueryClientProvider>
+            )}
+        </SupabaseAuthProvider>
     )
 }
