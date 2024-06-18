@@ -4,11 +4,14 @@ import axios from 'axios';
 const hostname = import.meta.env.VITE_HOSTNAME;
 
 const paths = {
+    "appConfig": "/api/appConfig",
     "theme": "/api/theme/themeConfig",
     "content": "/api/cms/content",
     "appDepot": (import.meta.env.MODE === "development")
         ? "http://localhost:3000"
-        : import.meta.env.VITE_HOME_APP
+        : import.meta.env.VITE_HOME_APP,
+
+    "getCrossPlatformState": "/api/cross-platform",
 };
 
 const client = axios.create({
@@ -54,4 +57,12 @@ const fitnessQueries = ({
     }),
 });
 
-export { client, paths, fitnessQueries}
+// general app queries
+const queries = ({
+    getContent: () => ({
+        queryKey: ['getContent'],
+        queryFn: async () => (await client.get(paths.content)).data
+    }),
+})
+
+export { client, paths, fitnessQueries, queries }

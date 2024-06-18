@@ -3,6 +3,8 @@ import { createClient } from '@supabase/supabase-js'
 import { Auth } from '@supabase/auth-ui-react'
 import { ThemeSupa } from '@supabase/auth-ui-shared'
 import { Box } from '@mui/material';
+
+import { useSupabaseStore } from '../store';
 // import './index.css'
 
 const {
@@ -13,17 +15,20 @@ const {
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export function SupabaseAuthProvider({ children }: any) {
-    const [session, setSession] = useState(null)
+    const supabaseStore = useSupabaseStore();
+    const [session, setSession] = useState(null);
 
     useEffect(() => {
         supabase.auth.getSession().then(({ data: { session } }: { data: { session: any } }) => {
-            setSession(session)
+            setSession(session);
+            supabaseStore.setSession(session);
         })
 
         const {
             data: { subscription },
         } = supabase.auth.onAuthStateChange((_event: any, session: any) => {
-            setSession(session)
+            setSession(session);
+            supabaseStore.setSession(session);
         })
 
 
@@ -46,8 +51,7 @@ export function SupabaseAuthProvider({ children }: any) {
             >
                 <Auth 
                     supabaseClient={supabase} 
-                    appearance={{ theme: ThemeSupa }} 
-                    redirectTo='http://localhost:3000/authenticated'
+                    appearance={{ theme: ThemeSupa }}
                 />
             </Box>
         )

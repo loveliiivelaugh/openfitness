@@ -1,21 +1,18 @@
 // Packages
 import React from 'react'
+import { useForm } from '@tanstack/react-form'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { 
     InputAdornment, IconButton,
     Box, Drawer, Grid, List, ListItemText, 
     Stack, TextField, Typography,
-    Chip,
-    Container,
-    Tabs,
-    Avatar, 
+    Chip, Tabs, Avatar
 } from '@mui/material'
 import { AppBar, Toolbar } from '@mui/material'
 import { BottomNavigation, BottomNavigationAction } from "@mui/material";
-import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
 import SearchIcon from '@mui/icons-material/Search';
 import CloseIcon from '@mui/icons-material/Close';
-import { useForm } from '@tanstack/react-form'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import HomeIcon from '@mui/icons-material/Home';
 
 // Components
 import ChartsContainer from './layout/charts/ChartsContainer';
@@ -28,25 +25,15 @@ import foodsQueryMockJson from './api/nutritionix_mock.json';
 import exercisesMockJson from './api/exercisesMock.json';
 
 // Services
-import { useFitnessStore } from './store';
-import { fitnessQueries, paths } from './api';
-import HomeIcon from '@mui/icons-material/Home';
+import { useFitnessStore, useSupabaseStore } from '../../store';
+import { fitnessQueries, paths, client, queries } from './api';
 
-
-const topics = [
-    "Weight",
-    "Food",
-    "Exercise",
-    "Profile",
-    "Sleep",
-    "Steps",
-    "Planning",
-    "Settings"
-];
 
 const Fitness = () => {
-    // const appStore = useAppStore();
     const fitnessStore = useFitnessStore();
+    const supabaseStore = useSupabaseStore();
+    const contentQuery = useQuery(queries.getContent());
+
     // Get Database Schema -- Builds fields for the forms
     const readDatabaseQuery = useQuery(fitnessQueries.readDatabaseQuery());
     // Get All Fitness Tables -- Data for the charts / visualizations
@@ -55,7 +42,8 @@ const Fitness = () => {
     const exercisesQuery = useQuery(fitnessQueries.exercisesQuery());
     const foodsQuery = useMutation(fitnessQueries.foodsQuery());
 
-    console.log("readDatabaseQuery: ", fitnessTablesQuery);
+    console.log("readDatabaseQuery: ", {contentQuery});
+    let topics = contentQuery.data?.openfitness?.topics || []; // Might be buggy
 
     const form = useForm({
         defaultValues: {
@@ -67,9 +55,55 @@ const Fitness = () => {
 
             if (value?.foodsInput) foodsQuery.mutate({ query: value.foodsInput });
 
-            if (value?.exercisesInput) exercisesQuery.mutate({ query: value.exercisesInput });
+            if (value?.exercisesInput) (exercisesQuery as any).mutate({ query: value.exercisesInput });
         },
     });
+
+    const handleBottomNavClick = async (item: string) => {
+        if (item === "Ai") {
+            // Need all the cross platform logic here
+            // ...
+            function getApp(appName: string) {
+                return (contentQuery as any).data.apps
+                    .find(({ name }: { name: string }) => (name === appName));
+            };
+    
+            // Get the current app metadata
+            const thisApp = getApp("Fitness");
+            // Get the next app metadata
+            const nextApp = getApp("AI");
+
+            const link = (import.meta.env.MODE === "development") 
+                ? nextApp.dev_url 
+                : nextApp.url;
+
+            // Format the cross platform state
+            const payload = {
+                appId: thisApp.name,
+                source: thisApp.dev_url,
+                destination_url: link,
+                destination_app: nextApp.name,
+                data: null, // No need to send any data -- not yet at least
+                user_id: (supabaseStore.session?.user?.id || null)
+            };
+
+            // Send the cross platform state to the db
+            const response = (await client.post(
+                paths.getCrossPlatformState, 
+                payload
+            ));
+            
+            // Redirect to the next app
+            if (response.status === 200) {
+                const queryString = `${link}/cross_platform?id=${response.data[0].id}`;
+                window.location.href = queryString;
+            };
+
+        } else {
+            fitnessStore.setActiveDrawer(item.toLowerCase());
+            fitnessStore.toggleDrawer(['Food', 'Exercise'].includes(item) ? { open: true, anchor: "bottom" } : false);
+        }
+    }
 
     React.useEffect(() => {
 
@@ -78,7 +112,7 @@ const Fitness = () => {
             // ... and dont want to requery everytime
             fitnessStore.setFitnessTables(fitnessTablesQuery.data);
 
-            const macrosLineFormatter = (data) => {
+            const macrosLineFormatter = (data: any) => {
                 console.log("macrosLineFormatter: ", data);
             }
 
@@ -125,7 +159,7 @@ const Fitness = () => {
                     <Stack m={1} p={1}>
                         {fitnessTablesQuery.data?.macros 
                             ? fitnessTablesQuery.data.macros
-                                .map((kpi, index) => (
+                                .map((kpi: { label: string, value: string }, index: number) => (
                                     <ListItemText key={index} primary={kpi.label} secondary={!kpi.value ? `No data logged yet for ${kpi.label}` : kpi.value} />
                                 ))
                             : <Alerts message="Missing macros data" />
@@ -184,11 +218,11 @@ const Fitness = () => {
                         {(!readDatabaseQuery.isLoading && (fitnessStore.drawerAnchor !== "bottom")) 
                             && Object.assign(
                                 {}, 
-                                ...topics.map((topic, index) => ({ 
+                                ...topics.map((topic: string, index: number) => ({ 
                                     [topic.toLowerCase()]: (
                                         <FormContainer 
                                             key={index} 
-                                            schema={readDatabaseQuery?.data.find(({ table }) => (table === topic.toLowerCase()))}
+                                            schema={readDatabaseQuery?.data.find(({ table }: { table: string }) => (table === topic.toLowerCase()))}
                                             fitnessTablesQuery={fitnessTablesQuery}
                                         />
                                     ) 
@@ -204,7 +238,7 @@ const Fitness = () => {
                                     <Typography variant="h5">
                                         Search {fitnessStore.activeDrawer === "exercise" ? "Exercises" : "Foods"}
                                     </Typography>
-                                    <IconButton variant="outlined" color="error" onClick={() => fitnessStore.toggleDrawer({ open: false, anchor: "bottom" })}>
+                                    <IconButton color="error" onClick={() => fitnessStore.toggleDrawer({ open: false, anchor: "bottom" })}>
                                         <CloseIcon />
                                     </IconButton>
                                 </Box>
@@ -224,7 +258,7 @@ const Fitness = () => {
                                 </List>
 
                                 {/* Bottom Drawer Search Textfield */}
-                                <Box component={form.Form} onSubmit={form.handleSubmit} sx={{ mb: 4 }}>
+                                <Box component={(form as any).Form} onSubmit={form.handleSubmit} sx={{ mb: 4 }}>
                                     <form.Field name="foodsInput">
                                         {(field) => (
 
@@ -237,7 +271,7 @@ const Fitness = () => {
                                                 InputProps={{
                                                     startAdornment: (
                                                         <InputAdornment position="start">
-                                                            <IconButton p={1} type="submit" sx={{ color: "#fff" }} onClick={form.handleSubmit}>
+                                                            <IconButton type="submit" sx={{ color: "#fff" }} onClick={form.handleSubmit}>
                                                                 <SearchIcon />
                                                             </IconButton>
                                                         </InputAdornment>
@@ -276,15 +310,12 @@ const Fitness = () => {
                         value={0}
                         sx={{ zIndex: 1000, pt: 2 }}
                     >
-                        {topics.map((item, index) => (
+                        {topics.map((item: string, index: number) => (
                             <BottomNavigationAction
                                 key={index} 
                                 label={item} 
-                                icon={topics[item]}
-                                onClick={() => {
-                                    fitnessStore.setActiveDrawer(item.toLowerCase());
-                                    fitnessStore.toggleDrawer(['Food', 'Exercise'].includes(item) && { open: true, anchor: "bottom" });
-                                }}
+                                icon={(topics as any)[item]}
+                                onClick={() => handleBottomNavClick(item)}
                             />
                         ))}
                     </BottomNavigation>

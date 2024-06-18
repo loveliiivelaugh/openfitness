@@ -3,7 +3,7 @@ import {
     ListItemIcon,ListItemButton
 } from '@mui/material';
 
-import { useFitnessStore } from '../store';
+import { useFitnessStore } from '../../../store';
 import mockJson from '../api/nutritionixSingleItemMock.json';
 
 

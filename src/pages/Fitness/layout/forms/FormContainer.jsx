@@ -6,7 +6,7 @@ import { useForm } from '@tanstack/react-form';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import moment from 'moment';
 
-import { useFitnessStore } from '../../store';
+import { useFitnessStore, useSupabaseStore } from '../../../../store';
 import { fitnessQueries } from '../../api';
 
 
@@ -47,6 +47,8 @@ const mapDefaultValue = (column, fitnessStore) => {
             return (fitnessStore.selectedSearchItem?.instructions || "");
         case "type":
             return (fitnessStore.selectedSearchItem?.type || "");
+        case "calories_burned":
+            return 0;
 
         // Food Search Default Values
         case "name":
@@ -169,6 +171,7 @@ const excludedColumns = [
 ];
 
 const FormContainer = ({ schema, fitnessTablesQuery }) => {
+    const supabaseStore = useSupabaseStore(); // auth states
     const fitnessStore = useFitnessStore();
     const fieldsQuery = useQuery(fitnessQueries.readTableQuery(schema));
     const mutateDbQuery = useMutation(fitnessQueries.writeTableQuery());
@@ -204,7 +207,7 @@ const FormContainer = ({ schema, fitnessTablesQuery }) => {
                 data: {
                     ...values.value,
                     id: (parseInt(findHighestId()) + 1),
-                    user_id: fitnessStore.userID
+                    user_id: supabaseStore.session.user.id
                 }
             };
 

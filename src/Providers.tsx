@@ -36,8 +36,8 @@ const InitConfigProvider = ({ children, session }: { children: any, session: any
 
     (client as any).defaults.headers.common["auth-token"] = `userAuthToken=${session?.access_token}&appId=${import.meta.env.VITE_APP_ID}`;
 
-    // Set global access to server client
-    (window as any).client = client;
+    // // Set global access to server client
+    // (window as any).client = client;
 
     // Initialize Keycloak
     // const [keycloakInstance, setKeycloakInstance] = useState(null as any);
