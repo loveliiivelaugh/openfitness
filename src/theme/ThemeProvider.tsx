@@ -3,6 +3,7 @@ import { ReactNode, useMemo } from 'react';
 import { createTheme, CssBaseline } from '@mui/material';
 import { ThemeProvider as MuiThemeProvider } from '@emotion/react';
 import { motion } from "framer-motion"
+import { useFitnessStore } from '../store';
 
 
 const useTheme = ({ mode, themeConfig }: { mode: "dark", themeConfig: any }) => useMemo(() => createTheme({
@@ -10,8 +11,9 @@ const useTheme = ({ mode, themeConfig }: { mode: "dark", themeConfig: any }) => 
   ...themeConfig[mode],
 }), [mode])
 
-export const ThemeProvider = ({ children, themeConfig }: { children: ReactNode, themeConfig: any }) => {
-  const theme = useTheme({ mode: 'dark', themeConfig })
+export const ThemeProvider = ({ children }: { children: ReactNode }) => {
+  const fitnessStore = useFitnessStore();
+  const theme = useTheme({ mode: 'dark', themeConfig: fitnessStore.appConfig.themeConfig });
 
   return (
     <MuiThemeProvider theme={theme}>

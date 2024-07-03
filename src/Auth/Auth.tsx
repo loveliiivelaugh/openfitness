@@ -1,60 +1,78 @@
 import { useState, useEffect } from 'react'
-import { createClient } from '@supabase/supabase-js'
-import { Auth } from '@supabase/auth-ui-react'
-import { ThemeSupa } from '@supabase/auth-ui-shared'
-import { Box } from '@mui/material';
+import { Subscription } from '@supabase/supabase-js'
+import { Alert, Button, Box, Typography } from '@mui/material';
 
+import { supabase } from './supabaseConfig';
 import { useSupabaseStore } from '../store';
-// import './index.css'
+import { client, paths } from '../pages/Fitness/api';
 
-const {
-    VITE_SUPABASE_URL: supabaseUrl,
-    VITE_SUPABASE_PUBLIC_KEY: supabaseAnonKey,
-} = import.meta.env;
-
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export function SupabaseAuthProvider({ children }: any) {
     const supabaseStore = useSupabaseStore();
-    const [session, setSession] = useState(null);
+
+    const [sub, setSubscription] = useState<Subscription | null>(null);
+    const [errors, setErrors] = useState<any[]>([]);
 
     useEffect(() => {
-        supabase.auth.getSession().then(({ data: { session } }: { data: { session: any } }) => {
-            setSession(session);
-            supabaseStore.setSession(session);
-        })
+        const [, token] = document.cookie.split(`${import.meta.env.VITE_SECRET_COOKIE}=`);
 
-        const {
-            data: { subscription },
-        } = supabase.auth.onAuthStateChange((_event: any, session: any) => {
-            setSession(session);
-            supabaseStore.setSession(session);
-        })
+        if (token || supabaseStore.session?.access_token) {
+            (client as any).defaults.headers.common["Authorization"] = `Bearer ${token}`;
+            
+            (async () => {    
+                const existingSession = (await client.get(`/auth/v1/user`)).data;
+                
+                if (existingSession?.refresh_token) {
+                    const data = await supabase.auth
+                        .refreshSession({ 
+                            refresh_token: existingSession.refresh_token as string 
+                        });
 
+                    // console.log({ data });
 
-        return () => subscription.unsubscribe()
+                    if (data?.error) setErrors([...errors, data?.error?.message]);
+                }
+                
+                // console.log({ existingSession });
+            })();
+        };
+            
+        supabase.auth
+            .getSession()
+            .then((
+                { data: { session } }: 
+                { data: { session: any } }
+            ) => {
+                // console.log({ session });
+                supabaseStore.setSession(session);
+            });
+
+        const { data: { subscription }} = supabase.auth
+            .onAuthStateChange((_event: any, session: any) => supabaseStore
+                .setSession(session)
+            );
+
+        setSubscription(subscription);
+
+        return () => sub?.unsubscribe();
+
     }, [])
 
-    console.log({ session })
-
-    if (!session) {
-        return (
-            <Box
-                sx={{ 
-                    display: "flex", 
-                    justifyContent: "center", 
-                    alignItems: "center", 
-                    minHeight: "100vh",
-                    // background: "rgba(80, 170, 255, 0.8)",
-                    width: "100vw" 
-                }}
-            >
-                <Auth 
-                    supabaseClient={supabase} 
-                    appearance={{ theme: ThemeSupa }}
-                />
-            </Box>
-        )
-    }
-    else return children(session);
+    // console.log("Auth", supabaseStore);
+    if (!supabaseStore.session) return (
+        <Box>
+            <Alert severity={'error'}>
+                <Typography variant="body1">
+                    Problem logging in...
+                </Typography>
+                <Typography variant="body1" color="error">
+                    {errors.join(', ')}
+                </Typography>
+            </Alert>
+            <Button variant="outlined" sx={{ mt: 2}} onClick={() => window.open(paths.appDepot, "_self")}>
+                Back to Home
+            </Button>
+        </Box>
+    );
+    else return children;
 }

@@ -6,104 +6,86 @@ import {
     InputAdornment, IconButton,
     Box, Drawer, Grid, List, ListItemText, 
     Stack, TextField, Typography,
-    Chip, Tabs, Avatar
+    Chip, Tabs, Tab
 } from '@mui/material'
-import { AppBar, Toolbar } from '@mui/material'
 import { BottomNavigation, BottomNavigationAction } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import CloseIcon from '@mui/icons-material/Close';
-import HomeIcon from '@mui/icons-material/Home';
+import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
 
 // Components
 import ChartsContainer from './layout/charts/ChartsContainer';
 import FormContainer from './layout/forms/FormContainer';
 import ListContent from './layout/ListContent';
 import Alerts from './layout/Alert';
-
-// Mocks
-import foodsQueryMockJson from './api/nutritionix_mock.json';
-import exercisesMockJson from './api/exercisesMock.json';
+import { Navbar } from './layout/Navbar';
 
 // Services
 import { useFitnessStore, useSupabaseStore } from '../../store';
-import { fitnessQueries, paths, client, queries } from './api';
+import { fitnessQueries } from './api';
+import * as cpxScripts from '../../cpxHelpers/cpxScripts';
 
 
 const Fitness = () => {
     const fitnessStore = useFitnessStore();
     const supabaseStore = useSupabaseStore();
-    const contentQuery = useQuery(queries.getContent());
 
     // Get Database Schema -- Builds fields for the forms
     const readDatabaseQuery = useQuery(fitnessQueries.readDatabaseQuery());
     // Get All Fitness Tables -- Data for the charts / visualizations
     const fitnessTablesQuery = useQuery(fitnessQueries.fitnessTablesQuery());
     // Exercises and Foods Search Queries -- Search for Exercises and Foods for logging
-    const exercisesQuery = useQuery(fitnessQueries.exercisesQuery());
+    const exercisesQuery = useMutation(fitnessQueries.exercisesQuery());
     const foodsQuery = useMutation(fitnessQueries.foodsQuery());
 
-    console.log("readDatabaseQuery: ", {contentQuery});
-    let topics = contentQuery.data?.openfitness?.topics || []; // Might be buggy
+    // Would like to optimize these queries so that there are not so many queries here
+    // Recent Exercise and Foods queries to reduce the amount of api hits on the external clients
+    const recentFoodsQuery = useQuery(fitnessQueries.readTableQuery({ table: "food" }))
+    const recentExercisesQuery = useQuery(fitnessQueries.readTableQuery({ table: "exercise" }))
+
+    // Destructure values to use more easily
+    let topics = fitnessStore.appConfig.cms.openfitness?.topics || [];
+    let appsContent = fitnessStore.appConfig.cms?.apps;
+    // let userId = supabaseStore.session?.user.id;
+
 
     const form = useForm({
-        defaultValues: {
-            exercisesInput: "",
-            foodsInput: ""
-        },
+        defaultValues: { searchInput: "" },
         onSubmit: ({ value }) => {
-            console.log("values: ", value);
 
-            if (value?.foodsInput) foodsQuery.mutate({ query: value.foodsInput });
+            if (fitnessStore.activeDrawer === "food") 
+                foodsQuery.mutate({ query: value.searchInput });
 
-            if (value?.exercisesInput) (exercisesQuery as any).mutate({ query: value.exercisesInput });
+            if (fitnessStore.activeDrawer === "exercise") 
+                exercisesQuery.mutate({ query: value.searchInput });
+
+            fitnessStore.setActiveSearchTab('search');
         },
     });
 
+    async function handleRefreshQueries() {
+        return await Promise.all([
+            fitnessTablesQuery.refetch(),
+            recentFoodsQuery.refetch(),
+            recentExercisesQuery.refetch()
+        ]);
+    };
+
     const handleBottomNavClick = async (item: string) => {
-        if (item === "Ai") {
-            // Need all the cross platform logic here
-            // ...
-            function getApp(appName: string) {
-                return (contentQuery as any).data.apps
-                    .find(({ name }: { name: string }) => (name === appName));
-            };
-    
-            // Get the current app metadata
-            const thisApp = getApp("Fitness");
-            // Get the next app metadata
-            const nextApp = getApp("AI");
-
-            const link = (import.meta.env.MODE === "development") 
-                ? nextApp.dev_url 
-                : nextApp.url;
-
-            // Format the cross platform state
-            const payload = {
-                appId: thisApp.name,
-                source: thisApp.dev_url,
-                destination_url: link,
-                destination_app: nextApp.name,
-                data: null, // No need to send any data -- not yet at least
-                user_id: (supabaseStore.session?.user?.id || null)
-            };
-
-            // Send the cross platform state to the db
-            const response = (await client.post(
-                paths.getCrossPlatformState, 
-                payload
-            ));
-            
-            // Redirect to the next app
-            if (response.status === 200) {
-                const queryString = `${link}/cross_platform?id=${response.data[0].id}`;
-                window.location.href = queryString;
-            };
-
-        } else {
+        if (item == "Ai") cpxScripts.handleNextApp({
+            apps: appsContent,
+            app: "AI",
+            session: supabaseStore.session
+        })
+        else {
             fitnessStore.setActiveDrawer(item.toLowerCase());
-            fitnessStore.toggleDrawer(['Food', 'Exercise'].includes(item) ? { open: true, anchor: "bottom" } : false);
+            fitnessStore.toggleDrawer(
+                ['Food', 'Exercise'].includes(item) 
+                    ? { open: true, anchor: "bottom" } 
+                    : { open: true, anchor: "right" }
+            );
         }
-    }
+    };
 
     React.useEffect(() => {
 
@@ -126,15 +108,7 @@ const Fitness = () => {
         "success": (
             <Grid container my={6} sx={{ maxWidth: "100vw" }}>
 
-                <AppBar>
-                    <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-                        <IconButton component="a" href={paths.appDepot}>
-                            <HomeIcon />
-                        </IconButton>
-                        <Typography variant="h6">OpenFitness</Typography> 
-                        <Avatar src={"M"} sx={{ width: 40, height: 40 }} />
-                    </Toolbar>
-                </AppBar>
+                <Navbar />
                 
                 <Grid item sm={12} sx={{ display: "flex", justifyContent: "space-between", alignItems: "center"}}>
                     <Typography variant="h4">Fitness Dashboard</Typography>
@@ -205,10 +179,15 @@ const Fitness = () => {
                     {/* <MyCalendar /> */}
                 </Grid>
 
-                <Drawer open={fitnessStore.isDrawerOpen} onClose={() => {
-                    fitnessStore.setActiveDrawer("weight");
-                    fitnessStore.toggleDrawer();
-                }} hideBackdrop anchor={fitnessStore.drawerAnchor}>
+                <Drawer 
+                    open={fitnessStore.isDrawerOpen} 
+                    onClose={() => {
+                        fitnessStore.setActiveDrawer("weight");
+                        fitnessStore.toggleDrawer();
+                    }} 
+                    hideBackdrop 
+                    anchor={fitnessStore.drawerAnchor}
+                >
                     <Box sx={{ 
                             width: (fitnessStore.drawerAnchor === "bottom") ? "100vw" : "80vw", 
                             height: (fitnessStore.drawerAnchor === "bottom") ? "auto" : "100vh", 
@@ -222,8 +201,10 @@ const Fitness = () => {
                                     [topic.toLowerCase()]: (
                                         <FormContainer 
                                             key={index} 
-                                            schema={readDatabaseQuery?.data.find(({ table }: { table: string }) => (table === topic.toLowerCase()))}
-                                            fitnessTablesQuery={fitnessTablesQuery}
+                                            schema={readDatabaseQuery?.data
+                                                .find(({ table }: { table: string }) => (table === topic.toLowerCase()))
+                                            }
+                                            handleRefreshQueries={handleRefreshQueries}
                                         />
                                     ) 
                                 }))
@@ -238,35 +219,78 @@ const Fitness = () => {
                                     <Typography variant="h5">
                                         Search {fitnessStore.activeDrawer === "exercise" ? "Exercises" : "Foods"}
                                     </Typography>
-                                    <IconButton color="error" onClick={() => fitnessStore.toggleDrawer({ open: false, anchor: "bottom" })}>
+                                    <IconButton color="error" onClick={() => {
+                                        fitnessStore.setActiveDrawer('weight');
+                                        fitnessStore.toggleDrawer();
+                                    }}>
                                         <CloseIcon />
                                     </IconButton>
                                 </Box>
 
-                                <Chip label="Recent" sx={{ mx: 2, mb: 2 }} />
+                                <Tabs 
+                                    value={fitnessStore.activeSearchTab} 
+                                    onChange={(
+                                        event: React.SyntheticEvent, 
+                                        newValue: ('recent' | 'favorites' | 'search')
+                                    ) => event && fitnessStore.setActiveSearchTab(newValue)}
+                                >
+                                    <Tab id="recent-tab" value="recent" label={<Chip label="Recent" />} />
+                                    <Tab id="favorites-tab" value="favorites" label={<Chip label="Favorites" />} />
+                                    <Tab id="search-tab" value="search" label={<Chip label="Search" />} />
+                                </Tabs>
+                                {{
+                                    'recent': (
+                                        <List sx={{ maxHeight: "40vh", height: "auto", overflow: "auto" }}>
+                                            {
+                                                ((fitnessStore.activeDrawer === "exercise") && recentExercisesQuery.isSuccess)
+                                                    ? <ListContent data={recentExercisesQuery.data} />
+                                                    : ((fitnessStore.activeDrawer === "food") && recentFoodsQuery.isSuccess)
+                                                        ? <ListContent data={recentFoodsQuery.data} />
+                                                        : <></>
+                                            }
+                                            {/* Search for a ... */}
+                                        </List>
+                                    ),
+                                    'favorites': (
+                                        <List sx={{ maxHeight: "40vh", height: "auto", overflow: "auto" }}>
+                                            {
+                                                ((fitnessStore.activeDrawer === "exercise") && recentExercisesQuery.isSuccess)
+                                                    ? <ListContent data={recentExercisesQuery.data} />
+                                                    : ((fitnessStore.activeDrawer === "food") && recentFoodsQuery.isSuccess)
+                                                        ? <ListContent data={recentFoodsQuery.data} />
+                                                        : <></>
+                                            }
+                                            {/* Search for a ... */}
+                                        </List>
+                                    ),
 
-                                {/* Foods or Exercises Search Results List */}
-                                <List sx={{ maxHeight: "40vh", height: "auto", overflow: "auto" }}>
-                                    <ListContent 
-                                        data={(fitnessStore.activeDrawer === "exercise") 
-                                            ? exercisesMockJson 
-                                            : (fitnessStore.activeDrawer === "food")
-                                                ? foodsQueryMockJson
-                                                : []
-                                        }
-                                    />
-                                </List>
+                                    // Foods or Exercises Search Results List 
+                                    'search': (
+                                        <List sx={{ maxHeight: "40vh", height: "auto", overflow: "auto" }}>
+                                            {
+                                                ((fitnessStore.activeDrawer === "exercise") && exercisesQuery.isSuccess)
+                                                    ? <ListContent data={exercisesQuery.data} />
+                                                    : ((fitnessStore.activeDrawer === "food") && foodsQuery.isSuccess)
+                                                        ? <ListContent data={foodsQuery.data} />
+                                                        : <></>
+                                            }
+                                            {/* Search for a ... */}
+                                        </List>
+                                    )
+
+                                }[fitnessStore.activeSearchTab]}
+                                
 
                                 {/* Bottom Drawer Search Textfield */}
                                 <Box component={(form as any).Form} onSubmit={form.handleSubmit} sx={{ mb: 4 }}>
-                                    <form.Field name="foodsInput">
+                                    <form.Field name="searchInput">
                                         {(field) => (
 
                                             <TextField
                                                 type="text"
                                                 value={field.state.value}
                                                 onChange={(event) => field.handleChange(event.target.value)}
-                                                placeholder="Search for a food"
+                                                placeholder="Search"
                                                 fullWidth
                                                 InputProps={{
                                                     startAdornment: (
@@ -278,9 +302,17 @@ const Fitness = () => {
                                                     ),
                                                     endAdornment: (
                                                         <InputAdornment position="end">
-                                                            {/* <IconButton id="qr-scan-button" onClick={() => appStore.setAppView("camera")} sx={{ color: "#fff" }}>
+                                                            <IconButton 
+                                                                id="qr-scan-button" 
+                                                                onClick={() => cpxScripts.handleNextApp({ 
+                                                                    app: "camera", 
+                                                                    apps: appsContent, 
+                                                                    session: supabaseStore.session 
+                                                                })} 
+                                                                sx={{ color: "#fff" }}
+                                                            >
                                                                 <QrCodeScannerIcon />
-                                                            </IconButton> */}
+                                                            </IconButton>
                                                         </InputAdornment>
                                                     ),
                                                     sx:{

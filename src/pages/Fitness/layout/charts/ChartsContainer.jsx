@@ -122,7 +122,7 @@ const ChartsContainer = ({
     
     const [activeChart, setActiveChart] = React.useState(defaultChart);
     const [filter, setFilter] = React.useState("Today");
-    console.log("ChartsContainer.data: ", filter);
+    // console.log("ChartsContainer.data: ", filter);
 
     return (
         <>

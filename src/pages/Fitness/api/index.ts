@@ -1,30 +1,40 @@
 import axios from 'axios';
 
 
-const hostname = import.meta.env.VITE_HOSTNAME;
-
 const paths = {
     "appConfig": "/api/appConfig",
     "theme": "/api/theme/themeConfig",
     "content": "/api/cms/content",
+    "getCrossPlatformState": "/api/cross-platform",
     "appDepot": (import.meta.env.MODE === "development")
         ? "http://localhost:3000"
         : import.meta.env.VITE_HOME_APP,
+    "hostname": (import.meta.env.MODE === "development")
+        ? "http://localhost:5001"
+        : import.meta.env.VITE_HOSTNAME
 
-    "getCrossPlatformState": "/api/cross-platform",
 };
 
 const client = axios.create({
-    baseURL: (import.meta.env.MODE === "development")
-        ? "http://localhost:5001"
-        : hostname,
-    timeout: 5000,
+    baseURL: paths.hostname,
     headers: {},
-    auth: {
-        username: import.meta.env.VITE_BASIC_AUTH_USERNAME,
-        password: import.meta.env.VITE_BASIC_AUTH_PASSWORD
-    },
+    // auth: {
+    //     username: import.meta.env.VITE_BASIC_AUTH_USERNAME,
+    //     password: import.meta.env.VITE_BASIC_AUTH_PASSWORD
+    // },
 });
+
+type RequestMethods = "get" | "post" | "put" | "patch" | "delete";
+
+type WriteTableReqData = {
+    method?: RequestMethods
+    table: string
+    data: any
+}
+
+type SearchQueryReq = {
+    query: string
+}
 
 const fitnessQueries = ({
     readDatabaseQuery: () => ({
@@ -32,12 +42,16 @@ const fitnessQueries = ({
         queryFn: async () => (await client.get(`/database/read_schema`)).data,
     }),
     readTableQuery: (schema: any) => ({
-        queryKey: ['readTableData'],
+        queryKey: ['readTableData', schema],
         queryFn: async () => (await client.get(`/database/read_db?table=${schema.table}`)).data,
     }),
     writeTableQuery: () => ({
         mutationKey: ['mutateDb'],
-        mutationFn: async (data: any) => (await client.post(`/database/write_db?table=${data.table}`, data.data)).data
+        mutationFn: async (data: WriteTableReqData) => (await client.post(`/database/write_db?table=${data.table}`, data.data)).data
+    }),
+    updateTableQuery: () => ({
+        mutationKey: ['mutateDb'],
+        mutationFn: async (data: WriteTableReqData) => (await client.put(`/database/write_db?table=${data.table}`, data.data)).data
     }),
     fitnessTablesQuery: () => ({
         queryKey: ['fitnessTables'],
@@ -45,20 +59,24 @@ const fitnessQueries = ({
     }),
     exercisesQuery: () => ({
         queryKey: ['exercisedb'],
-        mutationFn: async (params: any) => (await client.get(`/api/exercises/get-exercises?name=${params.query}`)).data,
+        mutationFn: async (params: SearchQueryReq) => (await client.get(`/api/openfitness/get-exercises?name=${params.query}`)).data,
         enabled: false
     }),
     foodsQuery: () => ({
         queryKey: ['fooddb'],
-        mutationFn: async (params: any) => {
+        mutationFn: async (params: SearchQueryReq) => {
             console.log('foodsQuery.mutationFn: ', params)
-            return (await client.get(`/api/foods/get-foods?food=${params.query}`)).data},
+            return (await client.get(`/api/openfitness/get-foods?food=${params.query}`)).data},
         enabled: false
     }),
 });
 
 // general app queries
 const queries = ({
+    appConfigQuery: ({
+        queryKey: ['appConfig'],
+        queryFn: async () => (await client.get(paths.appConfig)).data
+    }),
     getContent: () => ({
         queryKey: ['getContent'],
         queryFn: async () => (await client.get(paths.content)).data
