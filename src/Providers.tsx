@@ -4,7 +4,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 
-import { SupabaseAuthProvider } from './Auth/Auth';
+// import { SupabaseAuthProvider } from './Auth/Auth';
+import { SupabaseAuthProvider } from './Auth/Auth2';
 import { PageTransitionWrapper, ThemeProvider } from './theme/ThemeProvider';
 import { CrossPlatformProvider } from './cpxHelpers/CpxProvider';
 import './index.css'

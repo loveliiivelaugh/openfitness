@@ -11,7 +11,8 @@ const paths = {
         : import.meta.env.VITE_HOME_APP,
     "hostname": (import.meta.env.MODE === "development")
         ? "http://localhost:5001"
-        : import.meta.env.VITE_HOSTNAME
+        : import.meta.env.VITE_HOSTNAME,
+    "sensative": '/api/sensative?endpoint='
 
 };
 
@@ -22,6 +23,13 @@ const client = axios.create({
     //     username: import.meta.env.VITE_BASIC_AUTH_USERNAME,
     //     password: import.meta.env.VITE_BASIC_AUTH_PASSWORD
     // },
+});
+
+const adminClient = axios.create({
+    baseURL: (paths.hostname + paths.sensative),
+    headers: {
+        "Content-Type": "application/json",
+    }
 });
 
 type RequestMethods = "get" | "post" | "put" | "patch" | "delete";
@@ -39,19 +47,25 @@ type SearchQueryReq = {
 const fitnessQueries = ({
     readDatabaseQuery: () => ({
         queryKey: ['readDatabase'],
-        queryFn: async () => (await client.get(`/database/read_schema`)).data,
+        queryFn: async () => (await client.get(`/database/read_schema`)).data
+            // admin
+            // ? (await adminClient.get(`/database/read_schema`)).data
+            // : (await client.get(`/database/read_schema`)).data,
     }),
     readTableQuery: (schema: any) => ({
         queryKey: ['readTableData', schema],
         queryFn: async () => (await client.get(`/database/read_db?table=${schema.table}`)).data,
+        // queryFn: async () => (await client.get(`/database/read_db?table=${schema.table}`)).data,
     }),
     writeTableQuery: () => ({
         mutationKey: ['mutateDb'],
         mutationFn: async (data: WriteTableReqData) => (await client.post(`/database/write_db?table=${data.table}`, data.data)).data
+        // mutationFn: async (data: WriteTableReqData) => (await client.post(`/database/write_db?table=${data.table}`, data.data)).data
     }),
     updateTableQuery: () => ({
         mutationKey: ['mutateDb'],
         mutationFn: async (data: WriteTableReqData) => (await client.put(`/database/write_db?table=${data.table}`, data.data)).data
+        // mutationFn: async (data: WriteTableReqData) => (await client.put(`/database/write_db?table=${data.table}`, data.data)).data
     }),
     fitnessTablesQuery: () => ({
         queryKey: ['fitnessTables'],
@@ -83,4 +97,4 @@ const queries = ({
     }),
 })
 
-export { client, paths, fitnessQueries, queries }
+export { client, adminClient, paths, fitnessQueries, queries }

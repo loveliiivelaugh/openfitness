@@ -4,7 +4,7 @@ import { Alert, Button, Box, Typography } from '@mui/material';
 
 import { supabase } from './supabaseConfig';
 import { useSupabaseStore } from '../store';
-import { client, paths } from '../pages/Fitness/api';
+import { adminClient, client, paths } from '../pages/Fitness/api';
 
 
 export function SupabaseAuthProvider({ children }: any) {
@@ -18,6 +18,7 @@ export function SupabaseAuthProvider({ children }: any) {
 
         if (token || supabaseStore.session?.access_token) {
             (client as any).defaults.headers.common["Authorization"] = `Bearer ${token}`;
+            (adminClient as any).defaults.headers.common["Authorization"] = `Bearer ${token}`;
             
             (async () => {    
                 const existingSession = (await client.get(`/auth/v1/user`)).data;
