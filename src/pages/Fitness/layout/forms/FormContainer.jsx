@@ -72,7 +72,7 @@ const mapDefaultValue = (column, store) => {
         case "num_servings":
             return 1;
         case "user_id":
-            return store.session?.user?.id;
+            return store.session?.user?.id; // Server assigns user_id
         case "meal":
             let meal = "snack";
             // Check time of day and assign meal accordingly
@@ -246,7 +246,7 @@ const FormContainer = ({ schema, handleRefreshQueries }) => {
             data: {
                 ...values.value,
                 id: (parseInt(findHighestId()) + 1), // Supabase should auto-increment
-                user_id: supabaseStore.session?.user?.id // Supbase should auto-assign based on active session
+                // user_id: supabaseStore.session?.user?.id // Supbase should auto-assign based on active session
             }
         };
 

@@ -4,8 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 
-// import { SupabaseAuthProvider } from './Auth/Auth';
-import { SupabaseAuthProvider } from './Auth/Auth2';
+import { AuthProvider } from './Auth/Auth3';
 import { PageTransitionWrapper, ThemeProvider } from './theme/ThemeProvider';
 import { CrossPlatformProvider } from './cpxHelpers/CpxProvider';
 import './index.css'
@@ -15,7 +14,7 @@ const queryClient = new QueryClient();
 
 export const Providers = ({ children }: { children: ReactNode }) => {
     return (
-        <SupabaseAuthProvider>
+        <AuthProvider>
             <CrossPlatformProvider>
                 <QueryClientProvider client={queryClient}>
                     <ThemeProvider>
@@ -27,6 +26,6 @@ export const Providers = ({ children }: { children: ReactNode }) => {
                     </ThemeProvider>
                 </QueryClientProvider>
             </CrossPlatformProvider>
-        </SupabaseAuthProvider>
+        </AuthProvider>
     );
 };

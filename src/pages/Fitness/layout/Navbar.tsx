@@ -6,27 +6,29 @@ import {
 import HomeIcon from '@mui/icons-material/Home';
 
 import { paths } from '../api';
-import { supabase } from '../../../Auth/supabaseConfig';
+import { handleSignOut } from '../../../Auth/Auth3';
+import { useSupabaseStore } from '../../../store';
 
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 type SettingType = 'Profile' | 'Account' | 'Dashboard' | 'Logout';
 
 export const Navbar = () => {
+    const supabaseStore = useSupabaseStore();
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElUser(event.currentTarget);
     };
 
-    const handleCloseUserMenu = (setting: SettingType) => {
-        // console.log("handleCloseUserMenu: ", setting)
-        if (setting === 'Logout') supabase.auth.signOut();
+    const handleCloseUserMenu = async (setting: SettingType) => {
+        if (setting === 'Logout') {
+            const result = await handleSignOut();
+            if (result) supabaseStore.setSession(null);
+        };
 
         setAnchorElUser(null);
     };
-
-    // console.log({ fitnessStore })
 
     return (
         <AppBar>

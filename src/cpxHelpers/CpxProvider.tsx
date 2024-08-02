@@ -17,8 +17,9 @@ export const CrossPlatformProvider = ({ children }: { children: any }) => {
     // This seems to run twice?
     useEffect(() => {
         (async () => {
-            setIsLoading(true);
-            try {
+            
+            if (supabaseStore.session) try {
+                setIsLoading(true);
                 
                 const crossPlatformQuery = (await client.get(paths.getCrossPlatformState)).data
                 
@@ -53,7 +54,7 @@ export const CrossPlatformProvider = ({ children }: { children: any }) => {
                 setIsLoading(false);
             }
         })();
-    }, []);
+    }, [supabaseStore.session]);
 
     return isLoading 
         ? "Loading..." 
